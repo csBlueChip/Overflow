@@ -7,3 +7,4 @@ log
 [0-9]*--*
 log_??????*
 --log*
+helper

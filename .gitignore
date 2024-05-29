@@ -1,0 +1,9 @@
+overflow
+*.i
+*.o
+*.s
+a.out
+log
+[0-9]*--*
+log_??????*
+--log*

@@ -94,24 +94,26 @@ void  dog_groomer (uint32_t dcup)
 }
 
 //+================================================================================================
+char   map[]  = {'*','\e','E','M','H'};
+char*  pMap   = NULL;
+char*  text[] = {
+	"", "  ...Have you been looking for a way to escape?\n",
+	"  ...The Sherrif deputises them, and orders another Shiny Badge.\n",
+	"  ...The Sherrif pins the *second* Shiny Badge to the deputy.\n",
+	"  ...Sees all the heads you've collected,\n"
+	"     and proceeds to create a truly Cerberean Sherrif.\n",
+	NULL, "tag", "9", "10, the courier", "11, Frankenstein"
+};
+
 void  cerberus (void)
 {
-	if (*mode == 0x48) {
-		printf("* Friend #11, Frankenstein, turns up and says: \"%s!\"\n", (char*)&answer);
-		if (*(uint8_t*)&answer == 0131)
-			printf("  ...Sees all the heads you've collected,\n");
-			printf("     and proceeds to create a truly Cerberean Sherrif.\n");
-
-	} else if (*mode == 0x4D) {
-		printf("* Friend #10, the courier, turns up and says: \"%s!\"\n", (char*)&answer);
-		if (*(uint8_t*)&answer == 0x59)
-			printf("  ...The Sherrif pins the *second* Shiny Badge to the deputy.\n");
-
-	} else {
-		printf("* Friend #9, turns up and says: \"%s!\"\n", (char*)&answer);
-		if (*(uint8_t*)&answer == 89)
-			printf("  ...The Sherrif deputises them, and orders another Shiny Badge.\n");
-	}
+	for (pMap = (map +sizeof(map) -1);  (pMap > map) && (*pMap != *mode);  pMap--);
+		if ((pMap = (char*)(pMap -map))) {
+			printf( "* Friend #%s, turns up and says: \"%s!\"\n%s", 
+			        text[(size_t)pMap +sizeof(map)], (char*)&answer, 
+			        (!(*(uint8_t*)&answer-0131)) ? text[(size_t)pMap] : text[0]
+		);
+	};
 }
 
 //+================================================================================================
@@ -214,7 +216,7 @@ int  request (void)
 int  main (const int argc,  const char* const argv[],  const char* const envp[])
 {
 	printf("  ___ _  _ ___ ___ ___ _   ___ _ _ _\n"
-	       "# | | |  | |__ |_/ |__ |   | | | | |  v1.0\n"
+	       "# | | |  | |__ |_/ |__ |   | | | | |  v1.2\n"
 	       "# |_|  \\/  |__ | \\ |   |__ |_| |_|_|  csBlueChip, 2024\n\n");
 
 	printf("# Friend Request ID: %d\n", getpid());

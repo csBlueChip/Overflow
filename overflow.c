@@ -29,7 +29,7 @@
 //
 #include  <stdio.h>      // standard IO : scanf, printf
 #include  <stdint.h>     // standard integer types : UINT?_t
-#include  <unistd.h>     // pidof()
+#include  <unistd.h>     // unix standard : pidof()
 
 //-------------------------------------------------------------------------------------------------
 // debugger breakpoint
@@ -118,8 +118,8 @@ void  cerberus (void)
 }
 
 //+================================================================================================
-char  trap[]   = "@6Th}q|r67%'6bah|g6af6u|r6~qzfg6m{a6gqb6u6bhuf6t{h6b~q6xu|r}bg\0";
-char  detain[] = "%/I}fjak/,>;/{z}a|/z_/nak/gjc_|/v`z/ln_{z}j/ncc/{gj/mnakf{|";
+char  trap[]   = "@6Th}q|r67%'6bah|g6af6u|r6~qzfg6m{a6gqb6u6bhuf6t{h6b~q6xu|r}bg\0";  // #13
+char  detain[] = "%/I}fjak/,>;/{z}a|/z_/nak/gjc_|/v`z/ln_{z}j/ncc/{gj/mnakf{|";       // #14
 
 void  decrypt (void)
 {

@@ -81,7 +81,8 @@ CC=gcc
 # -g                   : include debug info
 # -fno-stack-protector : disable stack protection
 # -z exestack          ; tell linker to set +x on the Stack
-CFLAGS=-g -o0 -fno-stack-protector -z execstack -Wno-format-security -Wno-format
+CFLAGS=-g -w -o0 -fno-stack-protector -z execstack
+#Wno-format-security -Wno-format -Wno-implicit-function-declaration
 
 #------------------------------------------------------------------------------
 # "default" MUST BE THE FIRST TARGET

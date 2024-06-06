@@ -24,6 +24,9 @@
 #
 ###############################################################################
 
+# version string
+OVERS="\"1.3\""  
+
 #------------------------------------------------------------------------------
 # Parentheses and Braces        : $(makefile-varible) .. ${bash-variable}
 # Set make-var from BASh output : $(eval VAR=$(shell echo value))
@@ -77,8 +80,8 @@ CC=gcc
 
 # -g                   : include debug info
 # -fno-stack-protector : disable stack protection
-CFLAGS=-g -o0 -fno-stack-protector -Wno-format-security  -Wno-format 
-#-z execstack
+# -z exestack          ; tell linker to set +x on the Stack
+CFLAGS=-g -o0 -fno-stack-protector -z execstack -Wno-format-security -Wno-format
 
 #------------------------------------------------------------------------------
 # "default" MUST BE THE FIRST TARGET
@@ -136,7 +139,7 @@ exe:
 #
 $(EXE): $(SRC) Makefile
 	$(RMF) $(EXE) $(HELPER)/$(EXE)
-	$(CC) $(SRC)  $(CFLAGS) -o $(EXE)
+	$(CC) $(SRC)  $(CFLAGS) -o $(EXE) -DOVERS=$(OVERS)
 	@[[ -f $(EXE) && -d $(HELPER) ]] && $(CP) $(EXE) $(HELPER)/ || true
 
 #------------------------------------------------------------------------------
@@ -260,3 +263,26 @@ coreinfo: $(ID)--core
 	| grep .
 	@$(ECHO) ""
 	@$(RMF) $(CTMP)
+
+#------------------------------------------------------------------------------
+# make encrA TXT="message"
+#
+.PHONY: encrA
+encrA:
+	@i="$(TXT)";printf "char trap[] = \"$$(for((n=0;n<$${#i};n++));do \
+		printf "\\%o" $$(((`printf "%d" "'$${i:n:1}"`^0x15)+1));done)\";\n"
+
+#------------------------------------------------------------------------------
+# make encrB TXT="message"
+#
+.PHONY: encrB
+encrB:
+	@i="$(TXT)";printf "char detain[] = \"$$(for((n=0;n<$${#i};n++));do \
+		printf "\\%o" $$(((`printf "%d" "'$${i:n:1}"`^15)));done)\";\n"
+
+#------------------------------------------------------------------------------
+.PHONY: F15
+F15:
+	TXT='5?Ymvzq{?<.*?kjmql?jo?l|mz~rvqx?=KWZ?]^Q[VKL?W^IZ?ZL\^OZ[?KWZVM?X^PS='
+	@i="$(TXT)";printf "$$(for((n=0;n<$${#i};n++));do \
+		printf "\\%o" $$(((`printf "%d" "'$${i:n:1}"`^31)));done)\n"

@@ -79,6 +79,7 @@
 //
 uint32_t  answer  = HTONL(0x4E6F0000ul);  // Frankenstein's answer!
 char      mode[2] = {0105,0};             // Game mode
+char*     bandits = "* Friend #12 turns up and warns of squirrel banditos in the area\n";
 
 //+================================================================================================
 void  dog_groomer (uint32_t dcup)
@@ -94,26 +95,37 @@ void  dog_groomer (uint32_t dcup)
 }
 
 //+================================================================================================
-char   map[]  = {'*','\e','E','M','H'};
-char*  pMap   = NULL;
-char*  text[] = {
+const char  const  map[]  = {'*','\e','E','M','H'};
+const char*        pMap   = NULL;
+const char* const  text[] = {
 	"", "  ...Have you been looking for a way to escape?\n",
 	"  ...The Sherrif deputises them, and orders another Shiny Badge.\n",
 	"  ...The Sherrif pins the *second* Shiny Badge to the deputy.\n",
 	"  ...Sees all the heads you've collected,\n"
 	"     and proceeds to create a truly Cerberean Sherrif.\n",
-	NULL, "tag", "9", "10, the courier", "11, Frankenstein"
+	NULL, "tag", "9", "10, the courier,", "11, Frankenstein,"
 };
 
 void  cerberus (void)
 {
 	for (pMap = (map +sizeof(map) -1);  (pMap > map) && (*pMap != *mode);  pMap--);
 		if ((pMap = (char*)(pMap -map))) {
-			printf( "* Friend #%s, turns up and says: \"%s!\"\n%s", 
+			printf( "* Friend #%s turns up and says: \"%s!\"\n%s", 
 			        text[(size_t)pMap +sizeof(map)], (char*)&answer, 
 			        (!(*(uint8_t*)&answer-0131)) ? text[(size_t)pMap] : text[0]
 		);
 	};
+}
+
+//+================================================================================================
+char  trap[]   = "@6Th}q|r67%'6bah|g6af6u|r6~qzfg6m{a6gqb6u6bhuf6t{h6b~q6xu|r}bg\0";
+char  detain[] = "%/I}fjak/,>;/{z}a|/z_/nak/gjc_|/v`z/ln_{z}j/ncc/{gj/mnakf{|";
+
+void  decrypt (void)
+{
+	for (char* p = trap;  *p;  p++)
+		*p = (*p -1) ^0x15;
+//	printf("%s\n", trap);
 }
 
 //+================================================================================================
@@ -183,7 +195,7 @@ int  request (void)
 		.job  = HTONL(0xBC000000ul),
 	};
 
-	get_mode(&friend);
+	get_mode(&friend);  // Ask the user "Easy/Medium/Hard"?
 
 	printf("# Vet's address: %p, %sville\n", vet, ENDIAN_STR);
 
@@ -216,7 +228,7 @@ int  request (void)
 int  main (const int argc,  const char* const argv[],  const char* const envp[])
 {
 	printf("  ___ _  _ ___ ___ ___ _   ___ _ _ _\n"
-	       "# | | |  | |__ |_/ |__ |   | | | | |  v1.2\n"
+	       "# | | |  | |__ |_/ |__ |   | | | | |  v"OVERS"\n"
 	       "# |_|  \\/  |__ | \\ |   |__ |_| |_|_|  csBlueChip, 2024\n\n");
 
 	printf("# Friend Request ID: %d\n", getpid());

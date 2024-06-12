@@ -171,6 +171,8 @@ script: $(EXE)
 .PHONY: logging
 logging:
 	$(eval PID=$(shell grep 'ID:' $(LOGO) | cut -d' ' -f5 ))
+	@(($(PID)0)) || $(RMF) $(LOGR) $(LOGO) $(LOGI) $(LOGT)
+	@(($(PID)0))
 
 	$(eval LOGP="$(PID)--log.txt")
 

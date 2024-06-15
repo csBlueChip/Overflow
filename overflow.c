@@ -201,7 +201,7 @@ int  request (void)
 
 	input("+ Name? : ", friend.name);
 
-	printf("# Friend {id=%X, job=%X}\n", friend.id, friend.job);
+	printf("# Friend {id=%X, job=%X}\n", HTONL(friend.id), HTONL(friend.job));
 
 	if      (friend.job == HTONL(436257407ul))
 		printf("* Friend #5 turns up with: A Shiny Sherrif Badge\n");

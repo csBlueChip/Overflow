@@ -192,7 +192,7 @@ logging:
 	@`sed '1d;$$d' $(LOGI) | head -c -1 | hexdump -C | head -n -1 >>$(LOGP)`
 
 	@>>$(LOGP) $(ECHO) ""
-	@>>$(LOGP) stty -a
+	@>>$(LOGP) stty -a 2>&1 || true
 
 	@>>$(LOGP) $(ECHO) ""
 	@$(eval L=$(shell stty -g | sed -E 's/([^:]*:){19}([^:]*).*/\2/'))
